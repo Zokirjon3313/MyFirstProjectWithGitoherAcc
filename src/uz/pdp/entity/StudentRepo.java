@@ -8,6 +8,34 @@ import java.util.List;
 
 public class StudentRepo implements Repository<Student> {
     List<Student> students;
+    private static  StudentRepo singleton;
+
+    private StudentRepo(List<Student> students) {
+        this.students = students;
+    }
+
+    public static StudentRepo getInstance(){
+        if (singleton == null){
+            return singleton = new StudentRepo(loadData());
+        }else {
+            return singleton;
+        }
+    }
+@SuppressWarnings("unchecked")
+    private static List<Student> loadData() {
+        try (
+                InputStream inputStream = new FileInputStream(PATH);
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                ){
+           return (List<Student>)objectInputStream.readObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
+
+
+}
 
     public static String PATH = "src/uz/pdp/db/db_students.txt";
 
