@@ -75,12 +75,13 @@ public class StudentRepo implements Repository<Student> {
 
     @Override
     public List<Student> findAll() {
-        return null;
+        return students;
     }
 
     @Override
     public void delete(Student student) {
-
+        students.remove(student);
+        uploadData();
     }
 
     private Optional<Student> findById(Integer id) {
